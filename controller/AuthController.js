@@ -10,7 +10,7 @@ const { JWT_SECRET } = process.env;
 // never -> sync in your server 
 const fs = require("fs");
 const path = require("path");
-
+const bcrypt = require("bcrypt");
 
 const pathToOtpHTML = path.join(__dirname, "../", "utility", "otp.html");
 const HtmlTemplateString = fs.readFileSync(pathToOtpHTML, "utf-8");
@@ -46,7 +46,7 @@ const loginController = async function (req, res) {
         let { email, password } = req.body;
         let user = await UserModel.findOne({ email });
         if (user) {
-            let areEqual = password == user.password;
+            let areEqual = await bcrypt.compare(user.password, password);
             if (areEqual) {
                 // user is authenticated
                 /* 2. Sending the token -> people remember them
@@ -57,9 +57,9 @@ const loginController = async function (req, res) {
                 res.cookie("JWT", token, { maxAge: 90000000, httpOnly: true, path: "/" });
                 res.status(200).json({
                     status: "success",
-                    message:{
-                        name:user.name,
-                        email:user.email,
+                    message: {
+                        name: user.name,
+                        email: user.email,
                     }
                 })
             } else {
