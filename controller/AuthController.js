@@ -46,7 +46,9 @@ const loginController = async function (req, res) {
         let { email, password } = req.body;
         let user = await UserModel.findOne({ email });
         if (user) {
-            let areEqual = await bcrypt.compare(user.password, password);
+            console.log(password,user.password);
+            let areEqual = await bcrypt.compare(password,user.password);
+            console.log("res",areEqual)
             if (areEqual) {
                 // user is authenticated
                 /* 2. Sending the token -> people remember them
