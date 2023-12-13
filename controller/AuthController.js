@@ -6,6 +6,7 @@ const promisifiedJWTSign = promisify(jwt.sign);
 const promisifiedJWTVerify = promisify(jwt.verify);
 const otpGenerator = require("../utility/generateOtp");
 const { JWT_SECRET } = process.env;
+
 // never -> sync in your server 
 const fs = require("fs");
 const path = require("path");
