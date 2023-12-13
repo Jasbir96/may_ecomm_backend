@@ -62,7 +62,6 @@ const loginController = async function (req, res) {
                     }
                 })
             } else {
-                console.log("err", err)
                 res.status(404).json({
                     status: "failure",
                     message: "email or password is incorrect"
